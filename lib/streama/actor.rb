@@ -21,8 +21,8 @@ module Streama
       #
       # @param [ Hash ] options The options to publish with.
       #
-      # @example publish an activity with a object and target
-      #   current_user.publish_activity(:enquiry, :object => @enquiry, :target => @listing)
+      # @example publish an activity with a object and target_object
+      #   current_user.publish_activity(:enquiry, :object => @enquiry, :target_object => @listing)
       #
       def publish_activity(verb, options={})
         options[:receivers] = self.send(options[:receivers]) if options[:receivers].is_a?(Symbol)
@@ -34,7 +34,7 @@ module Streama
         # want to keep name
         # dont want to delete existing
         # later: send in update conditions.  now, update if less than a day old.
-        # todo: abstract the matching of object/target
+        # todo: abstract the matching of object/target_object
         # todo: recalculate receivers on update
         # assign_data is called on save, updating the data
 

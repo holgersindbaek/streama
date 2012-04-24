@@ -10,7 +10,7 @@ describe "Actor" do
     Activity.activity :new_comment do
       actor :user, :cache => [:full_name]
       object :listing, :cache => [:title]
-      target :listing, :cache => [:title]
+      target_object :listing, :cache => [:title]
     end
   end
   
@@ -21,12 +21,12 @@ describe "Actor" do
     end
     
     it "pushes activity to receivers" do
-      activity = user.publish_activity(:new_enquiry, :object => enquiry, :target => listing)
+      activity = user.publish_activity(:new_enquiry, :object => enquiry, :target_object => listing)
       activity.receivers.size == 6
     end
     
     it "pushes to a defined stream" do
-      activity = user.publish_activity(:new_enquiry, :object => enquiry, :target => listing, :receivers => :friends)
+      activity = user.publish_activity(:new_enquiry, :object => enquiry, :target_object => listing, :receivers => :friends)
       activity.receivers.size == 6
     end
     
@@ -36,7 +36,7 @@ describe "Actor" do
     
     before :each do
       5.times { |n| User.create(:full_name => "Receiver #{n}") }
-      user.publish_activity(:new_enquiry, :object => enquiry, :target => listing)
+      user.publish_activity(:new_enquiry, :object => enquiry, :target_object => listing)
       user.publish_activity(:new_comment, :object => listing)
     end
     
@@ -56,7 +56,7 @@ describe "Actor" do
     
     before :each do
       5.times { |n| User.create(:full_name => "Receiver #{n}") }
-      user.publish_activity(:new_enquiry, :object => enquiry, :target => listing)
+      user.publish_activity(:new_enquiry, :object => enquiry, :target_object => listing)
       user.publish_activity(:new_comment, :object => listing)
     end
     

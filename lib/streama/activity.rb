@@ -10,13 +10,13 @@ module Streama
       field :verb,        :type => Symbol
       field :actor,       :type => Hash
       field :object,      :type => Hash
-      field :target,      :type => Hash
+      field :target_object,      :type => Hash
       field :receivers,   :type => Array
           
       index :name
       index [['actor._id', Mongo::ASCENDING], ['actor._type', Mongo::ASCENDING]]
       index [['object._id', Mongo::ASCENDING], ['object._type', Mongo::ASCENDING]]
-      index [['target._id', Mongo::ASCENDING], ['target._type', Mongo::ASCENDING]]
+      index [['target_object._id', Mongo::ASCENDING], ['target_object._type', Mongo::ASCENDING]]
       index [['receivers.id', Mongo::ASCENDING], ['receivers.type', Mongo::ASCENDING]]
           
       validates_presence_of :actor, :verb
@@ -34,7 +34,7 @@ module Streama
       #   activity(:enquiry) do
       #     actor :user, :cache => [:full_name]
       #     object :enquiry, :cache => [:subject]
-      #     target :listing, :cache => [:title]
+      #     target_object :listing, :cache => [:title]
       #   end
       #
       # @return [Definition] Returns the registered definition
@@ -83,9 +83,9 @@ module Streama
         self
       end
       
-      # Returns an instance of an actor, object or target
+      # Returns an instance of an actor, object or target_object
       #
-      # @param [ Symbol ] type The data type (actor, object, target) to return an instance for.
+      # @param [ Symbol ] type The data type (actor, object, target_object) to return an instance for.
       #
       # @return [Mongoid::Document] document A mongoid document instance
       def load_instance(type)
@@ -101,7 +101,7 @@ module Streama
         
       def assign_data
         # this is what acts upon the spec in your activity.rb
-        [:actor, :object, :target].each do |type|
+        [:actor, :object, :target_object].each do |type|
           next unless object = load_instance(type)
 
           class_sym = object.class.name.underscore.to_sym

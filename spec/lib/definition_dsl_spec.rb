@@ -27,10 +27,10 @@ describe "Definition" do
     dsl.attributes[:object].should eq :listing => { :cache=>[:id, :title] }
   end
 
-  it "adds a target to the definition" do
+  it "adds a target_object to the definition" do
     dsl = definition_dsl
-    dsl.target(:company, :cache => [:id, :name])
-    dsl.attributes[:target].should eq :company => { :cache=>[:id, :name] }
+    dsl.target_object(:company, :cache => [:id, :name])
+    dsl.attributes[:target_object].should eq :company => { :cache=>[:id, :name] }
   end
   
 end

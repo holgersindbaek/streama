@@ -18,7 +18,7 @@ It works by posting to and querying from a firehose of individual activity items
 
 Create an Activity model and define the activities and the fields you would like to cache within the activity.
 
-An activity consists of an actor, a verb, an object, and a target. 
+An activity consists of an actor, a verb, an object, and a target_object. 
 
 ``` ruby
 class Activity
@@ -27,7 +27,7 @@ class Activity
   activity :new_enquiry do
     actor :user, :cache => [:full_name]
     object :enquiry, :cache => [:subject, :comment]
-    target :listing, :cache => [:title]
+    target_object :listing, :cache => [:title]
   end
 
 end
@@ -38,8 +38,8 @@ The activity verb is implied from the activity name, in the above example the ve
 The object may be the entity performing the activity, or the entity on which the activity was performed.
 e.g John(actor) shared a video(object)
 
-The target is the object that the verb is enacted on.
-e.g. Geraldine(actor) posted a photo(object) to her album(target)
+The target_object is the object that the verb is enacted on.
+e.g. Geraldine(actor) posted a photo(object) to her album(target_object)
 
 This is based on the Activity Streams 1.0 specification (http://activitystrea.ms)
 
@@ -73,7 +73,7 @@ Activity.create_indexes
 In your controller or background worker:
 
 ``` ruby
-current_user.publish_activity(:new_enquiry, :object => @enquiry, :target => @listing)
+current_user.publish_activity(:new_enquiry, :object => @enquiry, :target_object => @listing)
 ```
   
 This will publish the activity to the mongoid objects returned by the #followers method in the Actor.
@@ -81,11 +81,11 @@ This will publish the activity to the mongoid objects returned by the #followers
 To send your activity to different receievers, pass in an additional :receivers parameter.
 
 ``` ruby
-current_user.publish_activity(:new_enquiry, :object => @enquiry, :target => @listing, :receivers => :friends) # calls friends method
+current_user.publish_activity(:new_enquiry, :object => @enquiry, :target_object => @listing, :receivers => :friends) # calls friends method
 ```
 
 ``` ruby
-current_user.publish_activity(:new_enquiry, :object => @enquiry, :target => @listing, :receivers => current_user.find(:all, :conditions => {:group_id => mygroup}))
+current_user.publish_activity(:new_enquiry, :object => @enquiry, :target_object => @listing, :receivers => current_user.find(:all, :conditions => {:group_id => mygroup}))
 ```
 
 ## Retrieving Activity
@@ -107,7 +107,7 @@ To retrieve and filter to a particular activity type
 ``` ruby
 current_user.incoming_activity(:type => :activity_verb)
 ```
-If you need to return the instance of an :actor, :object or :target from an activity call the Activity#load_instance method
+If you need to return the instance of an :actor, :object or :target_object from an activity call the Activity#load_instance method
 
 ``` ruby
 activity.load_instance(:actor)

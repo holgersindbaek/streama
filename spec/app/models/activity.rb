@@ -4,7 +4,7 @@ class Activity
   activity :enquiry do
     actor :user, :cache => [:full_name]
     object :enquiry, :cache => [:subject]
-    target :listing, :cache => [:title]
+    target_object :listing, :cache => [:title]
   end
   
 end
