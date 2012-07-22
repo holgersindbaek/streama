@@ -54,7 +54,7 @@ module Streama
         incoming_activity options
       end
 
-      def incoming_activity(options = {}, limit)
+      def incoming_activity(limit, options = {})
         activity_class.stream_for(self, options).limit(limit)
       end
 
